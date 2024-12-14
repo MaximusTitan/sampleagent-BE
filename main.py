@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-base_url=os.getenv("base_url")
+base_url=os.getenv("NEXT_PUBLIC_BASE_URL")
 
 app = FastAPI()
 
