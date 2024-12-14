@@ -4,17 +4,12 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from utils import cal_len
 from utils import wiki_agent
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-base_url=os.getenv("NEXT_PUBLIC_BASE_URL")
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or specify the frontend domain: ["http://localhost:3000"]
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,12 +22,16 @@ class UserInput(BaseModel):
 async def process_data(data: UserInput):
     input_length = cal_len(data.user_input)
     agent_response = wiki_agent(data.user_input)
+    
     if data.user_input:
         print(f"User Inputs: {data.user_input}")
+    
     return {
         "message": "Data received successfully!",
-        "input_length": input_length , # Send the length back to the frontend
-        "agent's response": agent_response
+        "input_length": input_length,
+        "agent's response": agent_response.get("agent's response"),
+        "tool_response": agent_response.get("tool_response"),
+        "raw_messages": agent_response.get("raw_messages")
     }
 
 @app.get("/")
