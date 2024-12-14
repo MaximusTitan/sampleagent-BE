@@ -4,12 +4,17 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from utils import cal_len
 from utils import wiki_agent
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+base_url=os.getenv("base_url")
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or specify the frontend domain: ["http://localhost:3000"]
+    allow_origins=[base_url],  # Or specify the frontend domain: ["http://localhost:3000"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
